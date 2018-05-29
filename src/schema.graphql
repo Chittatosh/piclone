@@ -1,0 +1,26 @@
+# import Picture from "./generated/prisma.graphql"
+
+type Query {
+  fullPicList: [Picture!]!
+  userList: [User!]!
+  me: User
+}
+
+type Mutation {
+  signup(email: String!, password: String!, userName: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  addPicture(picUrl: String!, picTitle: String!): Picture!
+  removePicture(id: ID!): Picture!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  userName: String!
+  myPicList: [Picture!]!
+}

@@ -1,0 +1,712 @@
+# source: https://us1.prisma.sh/chittatosh-undirwade-78f1b4/piclone/dev
+# timestamp: Mon May 28 2018 05:10:41 GMT+0530 (India Standard Time)
+
+type AggregatePicture {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+scalar DateTime
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createPicture(data: PictureCreateInput!): Picture!
+  createUser(data: UserCreateInput!): User!
+  updatePicture(data: PictureUpdateInput!, where: PictureWhereUniqueInput!): Picture
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deletePicture(where: PictureWhereUniqueInput!): Picture
+  deleteUser(where: UserWhereUniqueInput!): User
+  upsertPicture(where: PictureWhereUniqueInput!, create: PictureCreateInput!, update: PictureUpdateInput!): Picture!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyPictures(data: PictureUpdateInput!, where: PictureWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  deleteManyPictures(where: PictureWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Picture implements Node {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  picUrl: String!
+  picTitle: String!
+  picUploader(where: UserWhereInput): User!
+}
+
+"""A connection to a list of items."""
+type PictureConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PictureEdge]!
+  aggregate: AggregatePicture!
+}
+
+input PictureCreateInput {
+  picUrl: String!
+  picTitle: String!
+  picUploader: UserCreateOneWithoutMyPicListInput!
+}
+
+input PictureCreateManyWithoutPicUploaderInput {
+  create: [PictureCreateWithoutPicUploaderInput!]
+  connect: [PictureWhereUniqueInput!]
+}
+
+input PictureCreateWithoutPicUploaderInput {
+  picUrl: String!
+  picTitle: String!
+}
+
+"""An edge in a connection."""
+type PictureEdge {
+  """The item at the end of the edge."""
+  node: Picture!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PictureOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  picUrl_ASC
+  picUrl_DESC
+  picTitle_ASC
+  picTitle_DESC
+}
+
+type PicturePreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  picUrl: String!
+  picTitle: String!
+}
+
+type PictureSubscriptionPayload {
+  mutation: MutationType!
+  node: Picture
+  updatedFields: [String!]
+  previousValues: PicturePreviousValues
+}
+
+input PictureSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PictureSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PictureSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PictureSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PictureWhereInput
+}
+
+input PictureUpdateInput {
+  picUrl: String
+  picTitle: String
+  picUploader: UserUpdateOneWithoutMyPicListInput
+}
+
+input PictureUpdateManyWithoutPicUploaderInput {
+  create: [PictureCreateWithoutPicUploaderInput!]
+  connect: [PictureWhereUniqueInput!]
+  disconnect: [PictureWhereUniqueInput!]
+  delete: [PictureWhereUniqueInput!]
+  update: [PictureUpdateWithWhereUniqueWithoutPicUploaderInput!]
+  upsert: [PictureUpsertWithWhereUniqueWithoutPicUploaderInput!]
+}
+
+input PictureUpdateWithoutPicUploaderDataInput {
+  picUrl: String
+  picTitle: String
+}
+
+input PictureUpdateWithWhereUniqueWithoutPicUploaderInput {
+  where: PictureWhereUniqueInput!
+  data: PictureUpdateWithoutPicUploaderDataInput!
+}
+
+input PictureUpsertWithWhereUniqueWithoutPicUploaderInput {
+  where: PictureWhereUniqueInput!
+  update: PictureUpdateWithoutPicUploaderDataInput!
+  create: PictureCreateWithoutPicUploaderInput!
+}
+
+input PictureWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PictureWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PictureWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PictureWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+  picUrl: String
+
+  """All values that are not equal to given value."""
+  picUrl_not: String
+
+  """All values that are contained in given list."""
+  picUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  picUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  picUrl_lt: String
+
+  """All values less than or equal the given value."""
+  picUrl_lte: String
+
+  """All values greater than the given value."""
+  picUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  picUrl_gte: String
+
+  """All values containing the given string."""
+  picUrl_contains: String
+
+  """All values not containing the given string."""
+  picUrl_not_contains: String
+
+  """All values starting with the given string."""
+  picUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  picUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  picUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  picUrl_not_ends_with: String
+  picTitle: String
+
+  """All values that are not equal to given value."""
+  picTitle_not: String
+
+  """All values that are contained in given list."""
+  picTitle_in: [String!]
+
+  """All values that are not contained in given list."""
+  picTitle_not_in: [String!]
+
+  """All values less than the given value."""
+  picTitle_lt: String
+
+  """All values less than or equal the given value."""
+  picTitle_lte: String
+
+  """All values greater than the given value."""
+  picTitle_gt: String
+
+  """All values greater than or equal the given value."""
+  picTitle_gte: String
+
+  """All values containing the given string."""
+  picTitle_contains: String
+
+  """All values not containing the given string."""
+  picTitle_not_contains: String
+
+  """All values starting with the given string."""
+  picTitle_starts_with: String
+
+  """All values not starting with the given string."""
+  picTitle_not_starts_with: String
+
+  """All values ending with the given string."""
+  picTitle_ends_with: String
+
+  """All values not ending with the given string."""
+  picTitle_not_ends_with: String
+  picUploader: UserWhereInput
+}
+
+input PictureWhereUniqueInput {
+  id: ID
+  picUrl: String
+}
+
+type Query {
+  pictures(where: PictureWhereInput, orderBy: PictureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Picture]!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  picture(where: PictureWhereUniqueInput!): Picture
+  user(where: UserWhereUniqueInput!): User
+  picturesConnection(where: PictureWhereInput, orderBy: PictureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PictureConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  picture(where: PictureSubscriptionWhereInput): PictureSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  email: String!
+  password: String!
+  userName: String!
+  myPicList(where: PictureWhereInput, orderBy: PictureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Picture!]
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  email: String!
+  password: String!
+  userName: String!
+  myPicList: PictureCreateManyWithoutPicUploaderInput
+}
+
+input UserCreateOneWithoutMyPicListInput {
+  create: UserCreateWithoutMyPicListInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutMyPicListInput {
+  email: String!
+  password: String!
+  userName: String!
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  userName_ASC
+  userName_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  email: String!
+  password: String!
+  userName: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  email: String
+  password: String
+  userName: String
+  myPicList: PictureUpdateManyWithoutPicUploaderInput
+}
+
+input UserUpdateOneWithoutMyPicListInput {
+  create: UserCreateWithoutMyPicListInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithoutMyPicListDataInput
+  upsert: UserUpsertWithoutMyPicListInput
+}
+
+input UserUpdateWithoutMyPicListDataInput {
+  email: String
+  password: String
+  userName: String
+}
+
+input UserUpsertWithoutMyPicListInput {
+  update: UserUpdateWithoutMyPicListDataInput!
+  create: UserCreateWithoutMyPicListInput!
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  userName: String
+
+  """All values that are not equal to given value."""
+  userName_not: String
+
+  """All values that are contained in given list."""
+  userName_in: [String!]
+
+  """All values that are not contained in given list."""
+  userName_not_in: [String!]
+
+  """All values less than the given value."""
+  userName_lt: String
+
+  """All values less than or equal the given value."""
+  userName_lte: String
+
+  """All values greater than the given value."""
+  userName_gt: String
+
+  """All values greater than or equal the given value."""
+  userName_gte: String
+
+  """All values containing the given string."""
+  userName_contains: String
+
+  """All values not containing the given string."""
+  userName_not_contains: String
+
+  """All values starting with the given string."""
+  userName_starts_with: String
+
+  """All values not starting with the given string."""
+  userName_not_starts_with: String
+
+  """All values ending with the given string."""
+  userName_ends_with: String
+
+  """All values not ending with the given string."""
+  userName_not_ends_with: String
+  myPicList_every: PictureWhereInput
+  myPicList_some: PictureWhereInput
+  myPicList_none: PictureWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}

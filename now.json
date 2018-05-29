@@ -1,0 +1,8 @@
+{
+  "files": ["src", "dist"],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "dotenv": true,
+  "alias": "piclone"
+}
